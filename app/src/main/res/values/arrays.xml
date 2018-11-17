@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="array_category">
+        <item>채소</item>
+        <item>과일</item>
+        <item>어패류</item>
+        <item>육류</item>
+        <item>소시지/두부</item>
+        <item>양념류</item>
+        <item>유제품</item>
+        <item>잼</item>
+    </string-array>
+</resources>
