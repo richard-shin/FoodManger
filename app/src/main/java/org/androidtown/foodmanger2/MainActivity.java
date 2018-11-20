@@ -22,6 +22,9 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
+
+/* author: ssh */
+
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG="MainActivity";

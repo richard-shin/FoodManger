@@ -51,7 +51,8 @@ public class BasicInfo {
         //========== 대화상자 키값  ==========//
         public static final int CONFIRM_DELETE = 3001;
         public static final int CONFIRM_TEXT_INPUT = 3002;
-        public static final int EDIT_CIRCULATION_DAY = 3003;
+        public static final int EDIT_DURATION_NUM = 3003;
+        public static final int EDIT_DURATION_DATE = 3004;
 
 
 

@@ -100,7 +100,7 @@ public class MemoDatabase {
                     + "INPUT_DATE TIMESTAMP DEFAULT CURRENT_TIMESTAMP, "
                     + "FOOD_NAME TEXT DEFAULT '', "
                     + "ID_RES  INTEGER, "
-                    + "FOOD_DURATION INTEGER, "
+                    + "FOOD_DAY INTEGER, "
                     + "CREATE_DATE TIMESTAMP DEFAULT CURRENT_TIMESTAMP "
                     +")";
             execSQL(db, CREATE_SQL);

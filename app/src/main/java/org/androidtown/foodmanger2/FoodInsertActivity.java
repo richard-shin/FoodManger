@@ -41,11 +41,11 @@ public class FoodInsertActivity extends AppCompatActivity {
     private static final String TAG="FoodInsertActivity";
 
     TitleBitmapButton insertSaveBtn, insertCancelBtn, deleteBtn;
-    TitleBitmapButton insertDateBtn;
     TitleBackgroundButton titleBackgroundBtn;
 
     EditText editName;
     TextView mCategoryName;
+    TextView mInsertDate;
     RadioGroup mRadioGroup;
     Calendar mCalendar = Calendar.getInstance();
     GridView mgridView;
@@ -89,7 +89,7 @@ public class FoodInsertActivity extends AppCompatActivity {
         setBottomButtons();
 
         // 입력날짜 설정
-        setCalendar();
+        setInsertDate();
     }
 
     @Override
@@ -106,7 +106,7 @@ public class FoodInsertActivity extends AppCompatActivity {
             insertSaveBtn.setText("수정");
             deleteBtn.setVisibility(View.VISIBLE);
         }else {
-            titleBackgroundBtn.setText("새 FOOD");
+            titleBackgroundBtn.setText("FOOD 추가");
             insertSaveBtn.setText("저장");
             deleteBtn.setVisibility(View.GONE);
         }
@@ -117,19 +117,27 @@ public class FoodInsertActivity extends AppCompatActivity {
     public void processIntent(Intent intent) {
         mFoodId = intent.getStringExtra(BasicInfo.KEY_FOOD_ID);
         editName.setText(intent.getStringExtra(BasicInfo.KEY_FOOD_NAME));
+
+        // 등록날짜 설정
         mDateStr = intent.getStringExtra(BasicInfo.KEY_FOOD_DATE);
+        String insertDateStr =null;
+        try {
+            Date insertDate = BasicInfo.dateDayFormat.parse(mDateStr);
+            insertDateStr = BasicInfo.dateDayNameFormat.format(insertDate);
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
+        mInsertDate.setText(insertDateStr);
 
         // 유통기간 설정
         mFoodDuration = intent.getIntExtra(BasicInfo.KEY_FOOD_DURATION, 0);
         RadioButton radioButton;
         if(mFoodDuration == 3) {
             radioButton = (RadioButton) mRadioGroup.getChildAt(0);
-        }else if(mFoodDuration == 5) {
-            radioButton = (RadioButton)mRadioGroup.getChildAt(1);
         }else if(mFoodDuration == 7) {
-            radioButton = (RadioButton)mRadioGroup.getChildAt(2);
+            radioButton = (RadioButton)mRadioGroup.getChildAt(1);
         }else {
-            radioButton = (RadioButton)mRadioGroup.getChildAt(3);
+            radioButton = (RadioButton)mRadioGroup.getChildAt(2);
             radioButton.setText(String.valueOf(mFoodDuration) + "일");
         }
         if(radioButton != null) {
@@ -162,6 +170,10 @@ public class FoodInsertActivity extends AppCompatActivity {
                 }
                 view.setBackgroundColor(Color.YELLOW);
                 mFoodResId = position;
+
+                Resources res = getResources();
+                String[] category= res.getStringArray(R.array.array_category);
+                mCategoryName.setText(category[mFoodResId]);
             }
         });
 
@@ -173,15 +185,17 @@ public class FoodInsertActivity extends AppCompatActivity {
          mRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup radioGroup, int checkedId) {
-                if(checkedId == R.id.radio3) {
-                    showDialog( BasicInfo.EDIT_CIRCULATION_DAY);
-                }else{
-                 RadioButton button = findViewById(checkedId);
-                 String day= button.getText().toString();
-                 int index = day.lastIndexOf("일");
-                 String day2 = day.substring(0,index);
-                 mFoodDuration = Integer.parseInt(day2);
-                 Log.d(TAG, "radioButton value: " + mFoodDuration);
+                if(checkedId == R.id.radio3) { // insert number
+                    showDialog( BasicInfo.EDIT_DURATION_NUM);
+                }else if(checkedId == R.id.radio4) { // select date
+                    setDurationDate();
+                }else {
+                     RadioButton button = findViewById(checkedId);
+                     String day= button.getText().toString();
+                     int index = day.lastIndexOf("일");
+                     String day2 = day.substring(0,index);
+                     mFoodDuration = Integer.parseInt(day2);
+                     Log.d(TAG, "radioButton value: " + mFoodDuration);
                 }
             }
         });
@@ -194,7 +208,7 @@ public class FoodInsertActivity extends AppCompatActivity {
 
         switch (id) {
 
-            case BasicInfo.EDIT_CIRCULATION_DAY:
+            case BasicInfo.EDIT_DURATION_NUM:
                 builder = new AlertDialog.Builder(this);
 
                 LayoutInflater inflater = (LayoutInflater)
@@ -262,32 +276,73 @@ public class FoodInsertActivity extends AppCompatActivity {
         return builder.create();
     }
 
-    public void setCalendar() {
+    public void setDurationDate() {
+        Calendar calendar = Calendar.getInstance();
+        Date date = new Date();
+        try {
+            date = BasicInfo.dateDayNameFormat.parse(mDateStr);
+        }catch (Exception e) {
+            Log.d(TAG, "Exception in parsing date : " + date);
+        }
 
-        insertDateBtn = findViewById(R.id.insert_dateBtn);
-        insertDateBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String mDateStr = insertDateBtn.getText().toString();
-                Calendar calendar = Calendar.getInstance();
-                Date date = new Date();
-                try {
-                    date = BasicInfo.dateDayNameFormat.parse(mDateStr);
-                }catch (Exception e) {
-                    Log.d(TAG, "Exception in parsing date : " + date);
-                }
+        calendar.setTime(date);
 
-                calendar.setTime(date);
+        new DatePickerDialog(FoodInsertActivity.this,
+                dateSetListener,
+                calendar.get(Calendar.YEAR),
+                calendar.get(Calendar.MONTH),
+                calendar.get(Calendar.DAY_OF_MONTH)).show();
 
-                new DatePickerDialog(FoodInsertActivity.this,
-                        dateSetListener,
-                        calendar.get(Calendar.YEAR),
-                        calendar.get(Calendar.MONTH),
-                        calendar.get(Calendar.DAY_OF_MONTH)).show();
+    }
+
+    DatePickerDialog.OnDateSetListener dateSetListener = new DatePickerDialog.OnDateSetListener() {
+        @Override
+        public void onDateSet(DatePicker datePicker, int year, int month, int day) {
+            String dateStr = year + "-" + (month+1) + "-" + day;
+            if (dateStr.length() > 10) {
+                dateStr = dateStr.substring(0, 10);
             }
-        });
 
-        Date curDate = new Date();
+            RadioButton radioButton = findViewById(R.id.radio4);
+            radioButton.setText(dateStr);
+
+            Date currentTime = new Date ();
+            String today = BasicInfo.dateDayFormat.format(currentTime);
+
+            int days = calDate(dateStr, today);
+            Log.d(TAG, "날짜지정 후 duration: " + days);
+
+            mFoodDuration = days;
+
+        }
+    };
+
+    public int calDate(String date1, String date2) {
+
+        long calDateDays = 0;
+
+        try{
+            Date firstDate =  BasicInfo.dateDayFormat.parse(date1);
+            Date secondDate = BasicInfo.dateDayFormat.parse(date2);
+
+            long calDate = firstDate.getTime() - secondDate.getTime();
+
+            calDateDays = calDate / (24*60*60*1000);
+
+        }catch (ParseException e){
+            e.printStackTrace();
+        }
+
+        return (int) calDateDays;
+    }
+
+
+    public void setInsertDate() {
+
+
+        mInsertDate = findViewById(R.id.insert_date);
+
+        Date curDate = new Date(); // 현재 날짜
         mCalendar.setTime(curDate);
 
         int year = mCalendar.get(Calendar.YEAR);
@@ -295,19 +350,8 @@ public class FoodInsertActivity extends AppCompatActivity {
         int dayofMonth = mCalendar.get(Calendar.DAY_OF_MONTH);
 
         String date = year + "년" + (month+1) + "월" + dayofMonth + "일";
-        insertDateBtn.setText(date);
+        mInsertDate.setText(date);
     }
-
-
-    DatePickerDialog.OnDateSetListener dateSetListener = new DatePickerDialog.OnDateSetListener() {
-        @Override
-        public void onDateSet(DatePicker datePicker, int year, int month, int day) {
-            mCalendar.set(year, month, day);
-            String date = year + "년" + (month+1) + "월" + day + "일";
-            insertDateBtn.setText(date);
-
-        }
-    };
 
     public void setBottomButtons() {
 
@@ -380,11 +424,11 @@ public class FoodInsertActivity extends AppCompatActivity {
         }
     }
 
-    // 일자와 메모 확인
+    // 입력 날짜 저장 및 메모 확인
     private boolean parseValues() {
 
         // 입력날짜 저장하기
-        String insertDateStr = insertDateBtn.getText().toString();
+        String insertDateStr = mInsertDate.getText().toString();
         try {
             Date insertDate = BasicInfo.dateDayNameFormat.parse(insertDateStr);
             mDateStr = BasicInfo.dateDayFormat.format(insertDate);
@@ -408,13 +452,14 @@ public class FoodInsertActivity extends AppCompatActivity {
 
 
         String SQL = "insert into " + MemoDatabase.TABLE_MEMO +
-                "(INPUT_DATE, FOOD_NAME, ID_RES, FOOD_DURATION) values(" +
+                "(INPUT_DATE, FOOD_NAME, ID_RES, FOOD_DAY) values(" +
                 "DATETIME('" + mDateStr + "'), " +
                 "'" + mFoodName + "', " +
                 "'" + mFoodResId + "' , " +
                 "'"+ mFoodDuration + "')";
         if(MainActivity.mDatabase !=null) {
             MainActivity.mDatabase.execSQL(SQL);
+            Log.d(TAG, " new [ " + mFoodName + " ] food inserted");
         }
 
         Intent intent = getIntent();

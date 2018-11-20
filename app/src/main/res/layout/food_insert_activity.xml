@@ -27,8 +27,16 @@
         android:focusable="true"
         android:focusableInTouchMode="true"
         android:orientation="vertical">
+        <TextView
+            android:id="@+id/insert_date"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:text="2018년00월00일"
+            android:textSize="14dp"/>
         <EditText
             android:id="@+id/foodName"
+            android:layout_marginTop="20dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="재료명을 입력하세요"/>
@@ -55,7 +63,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="5dp"
-                android:text="채소"
                 android:textStyle="bold"
                 android:textColor="#ff000000"
                 android:textSize="18dp"/>
@@ -98,13 +105,6 @@
                     android:textStyle="bold"
                     android:textSize="16dp"/>
                 <RadioButton
-                    android:id="@+id/radio1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="5일"
-                    android:textStyle="bold"
-                    android:textSize="16dp"/>
-                <RadioButton
                     android:id="@+id/radio2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -115,19 +115,17 @@
                     android:id="@+id/radio3"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="기타"
+                    android:text="숫자입력"
+                    android:textStyle="bold"
+                    android:textSize="16dp"/>
+                <RadioButton
+                    android:id="@+id/radio4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="날짜"
                     android:textStyle="bold"
                     android:textSize="16dp"/>
             </RadioGroup>
-            <org.androidtown.foodmanger2.common.TitleBitmapButton
-                android:layout_width="240dp"
-                android:layout_height="48dp"
-                android:id="@+id/insert_dateBtn"
-                android:layout_marginTop="10dp"
-                android:layout_gravity="center_horizontal"
-                android:layout_margin="5dp"
-                android:text="2018년 11월 14일"/>
-
         </LinearLayout>
     </LinearLayout>
 
