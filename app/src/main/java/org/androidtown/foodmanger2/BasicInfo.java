@@ -23,7 +23,9 @@ public class BasicInfo {
         public static int image_category[] = { R.drawable.vegetables_category, R.drawable.fruit_category,
             R.drawable.fish_category, R.drawable.meat_category,
             R.drawable.sausage_category, R.drawable.seasoning_category,
-            R.drawable.milk_category, R.drawable.jam_category };
+            R.drawable.milk_category, R.drawable.guitar_category,
+            R.drawable.sidedish_category, R.drawable.maindish_category,
+            R.drawable.soup_category};
 
 
         //========== 인텐트 부가정보 전달을 위한 키값 ==========//

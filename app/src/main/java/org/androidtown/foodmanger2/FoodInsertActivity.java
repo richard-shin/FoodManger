@@ -473,10 +473,10 @@ public class FoodInsertActivity extends AppCompatActivity {
         String SQL = "update " + MemoDatabase.TABLE_MEMO +
                 " set " +
                 " INPUT_DATE = DATETIME('" + mDateStr + "')," +
-                "'" + mFoodName + "', " +
-                "'" + mFoodResId + "' , " +
-                "'"+ mFoodDuration + "'" +
-                " where _id = '" + mFoodId + "'";
+                " FOOD_NAME = '" + mFoodName + "', " +
+                " ID_RES = '" + mFoodResId + "' , " +
+                " FOOD_DAY = '"+ mFoodDuration + "'" +
+                "  where _id = '" + mFoodId + "'";
         Log.d(TAG, "SQL : " + SQL);
         if(MainActivity.mDatabase != null) {
             MainActivity.mDatabase.execSQL(SQL);

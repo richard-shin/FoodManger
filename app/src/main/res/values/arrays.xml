@@ -3,11 +3,14 @@
     <string-array name="array_category">
         <item>채소</item>
         <item>과일</item>
-        <item>어패류</item>
+        <item>해물류</item>
         <item>육류</item>
         <item>소시지/두부</item>
-        <item>양념류</item>
-        <item>유제품</item>
-        <item>잼</item>
+        <item>양념/소스</item>
+        <item>유제품/달걀</item>
+        <item>기타</item>
+        <item>밑반찬</item>
+        <item>메인반찬</item>
+        <item>국/찌개</item>
     </string-array>
 </resources>
