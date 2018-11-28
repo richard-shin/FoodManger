@@ -1,4 +1,4 @@
-package org.androidtown.foodmanger2.common;
+package org.androidtown.foodmanger3.common;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -11,7 +11,7 @@ import android.support.v7.widget.AppCompatButton;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 
-import org.androidtown.foodmanger2.R;
+import org.androidtown.foodmanger3.R;
 
 
 public class TitleBitmapButton extends AppCompatButton {

@@ -1,4 +1,4 @@
-package org.androidtown.foodmanger2;
+package org.androidtown.foodmanger3;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -28,9 +28,9 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import org.androidtown.foodmanger2.common.TitleBackgroundButton;
-import org.androidtown.foodmanger2.common.TitleBitmapButton;
-import org.androidtown.foodmanger2.db.MemoDatabase;
+import org.androidtown.foodmanger3.common.TitleBackgroundButton;
+import org.androidtown.foodmanger3.common.TitleBitmapButton;
+import org.androidtown.foodmanger3.db.MemoDatabase;
 
 import java.text.ParseException;
 import java.util.Calendar;

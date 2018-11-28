@@ -9,7 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="#ffffffff">
-        <org.androidtown.foodmanger2.common.TitleBackgroundButton
+        <org.androidtown.foodmanger3.common.TitleBackgroundButton
             android:id="@+id/titleBackgroundBtn"
             android:layout_alignParentTop="true"
             android:layout_width="match_parent"
@@ -136,21 +136,21 @@
         android:gravity="center_horizontal"
         android:layout_alignParentBottom="true"
         android:orientation="horizontal">
-        <org.androidtown.foodmanger2.common.TitleBitmapButton
+        <org.androidtown.foodmanger3.common.TitleBitmapButton
             android:id="@+id/insert_btn"
             android:layout_width="100dp"
             android:layout_height="48dp"
             android:textSize="18dp"
             android:textStyle="bold"
             android:text="추가"/>
-        <org.androidtown.foodmanger2.common.TitleBitmapButton
+        <org.androidtown.foodmanger3.common.TitleBitmapButton
             android:id="@+id/delete_btn"
             android:layout_width="100dp"
             android:layout_height="48dp"
             android:textSize="18dp"
             android:textStyle="bold"
             android:text="삭제"/>
-        <org.androidtown.foodmanger2.common.TitleBitmapButton
+        <org.androidtown.foodmanger3.common.TitleBitmapButton
             android:id="@+id/close_btn"
             android:layout_width="100dp"
             android:layout_height="48dp"

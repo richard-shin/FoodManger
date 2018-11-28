@@ -1,4 +1,4 @@
-package org.androidtown.foodmanger2;
+package org.androidtown.foodmanger3;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;

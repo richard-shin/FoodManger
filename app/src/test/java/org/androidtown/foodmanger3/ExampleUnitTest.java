@@ -1,4 +1,4 @@
-package org.androidtown.foodmanger2;
+package org.androidtown.foodmanger3;
 
 import org.junit.Test;
 

@@ -1,4 +1,4 @@
-package org.androidtown.foodmanger2.common;
+package org.androidtown.foodmanger3.common;
 
 import android.content.Context;
 import android.graphics.Canvas;
@@ -10,7 +10,7 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.widget.Toast;
 
-import org.androidtown.foodmanger2.R;
+import org.androidtown.foodmanger3.R;
 
 public class TitleBackgroundButton extends AppCompatButton {
 

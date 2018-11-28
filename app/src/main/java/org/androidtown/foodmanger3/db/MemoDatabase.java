@@ -1,4 +1,4 @@
-package org.androidtown.foodmanger2.db;
+package org.androidtown.foodmanger3.db;
 
 import android.content.Context;
 import android.database.Cursor;
@@ -7,7 +7,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.os.Environment;
 import android.util.Log;
 
-import org.androidtown.foodmanger2.BasicInfo;
+import org.androidtown.foodmanger3.BasicInfo;
 import java.io.File;
 
 public class MemoDatabase {

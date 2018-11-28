@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="#ffffffff">
+    android:layout_height="match_parent">
 
     <LinearLayout
         android:id="@+id/titleLayout"
@@ -14,6 +13,7 @@
         android:layout_marginBottom="5dp"
         android:gravity="right"
         android:orientation="horizontal">
+
         <TextView
             android:id="@+id/green_text"
             android:layout_width="34dp"
@@ -51,12 +51,15 @@
             android:textColor="#ff000000"
             />
     </LinearLayout>
-    <ListView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+    <android.support.v7.widget.RecyclerView
         android:id="@+id/foodList"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
         android:layout_below="@id/titleLayout"
         android:layout_above="@+id/buttonLayout"
+        android:orientation="vertical"
+        android:clipToPadding="false"
+        android:overScrollMode="never"
         />
     <LinearLayout
         android:id="@+id/buttonLayout"
@@ -67,20 +70,18 @@
 
         <LinearLayout
             android:orientation="horizontal"
-            android:layout_gravity="center"
+            android:layout_gravity="right"
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="10dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
 
-            <org.androidtown.foodmanger2.common.TitleBitmapButton
-                android:layout_width="100dp"
-                android:layout_height="48dp"
-                android:text="추가"
-                android:id="@+id/newFoodBtn"/>
-            <org.androidtown.foodmanger2.common.TitleBitmapButton
-                android:layout_width="100dp"
-                android:layout_height="48dp"
-                android:text="닫기"
-                android:id="@+id/closeBtn"/>
+            <ImageButton
+                android:id="@+id/newFoodBtn"
+                android:layout_width="34dp"
+                android:layout_height="34dp"
+                android:background="@drawable/plus_circle"
+                />
 
         </LinearLayout>
 

@@ -1,24 +1,35 @@
-package org.androidtown.foodmanger2;
+package org.androidtown.foodmanger3;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.content.res.Resources;
 import android.database.Cursor;
+import android.graphics.Canvas;
 import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import org.androidtown.foodmanger2.common.TitleBitmapButton;
-import org.androidtown.foodmanger2.db.MemoDatabase;
+import org.androidtown.foodmanger3.common.TitleBitmapButton;
+import org.androidtown.foodmanger3.db.MemoDatabase;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -35,10 +46,14 @@ public class MainActivity extends AppCompatActivity {
 
     ListView listView;
     FoodAdapter mFoodListadapter;
-    TitleBitmapButton insertBtn, closeBtn;
+    ImageButton insertBtn;
     TextView greenText, yellowText, redText;
 
+    SwipeController swipeController = null;
+
     public static MemoDatabase mDatabase=null;
+
+    String mFoodId;
 
     int mGreenNum = 0;
     int mYellowNum = 0;
@@ -70,17 +85,8 @@ public class MainActivity extends AppCompatActivity {
         yellowText = (TextView) findViewById(R.id.yellow_text);
         redText = (TextView) findViewById(R.id.red_text);
 
-        // 리스트뷰 설정
-        listView = findViewById(R.id.foodList);
-        mFoodListadapter = new FoodAdapter(getApplicationContext());
-        listView.setAdapter(mFoodListadapter);
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                 viewFood(i);
-
-            }
-        });
+        // RecyclerView 설정
+        setupRecyclerView();
 
         // 추가 버튼 설정
         insertBtn = findViewById(R.id.newFoodBtn);
@@ -94,18 +100,6 @@ public class MainActivity extends AppCompatActivity {
                 startActivityForResult(intent, BasicInfo.REQ_INSERT_ACTIVITY);
             }
         });
-
-
-        // 닫기 버튼 설정
-        closeBtn = findViewById(R.id.closeBtn);
-        closeBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
-            }
-        });
-
-
     }
 
     @Override
@@ -136,6 +130,43 @@ public class MainActivity extends AppCompatActivity {
         }else {
             Log.d(TAG, "Food database is not open");
         }
+
+    }
+
+    private void setupRecyclerView() {
+
+        RecyclerView recyclerView = findViewById(R.id.foodList);
+        mFoodListadapter = new FoodAdapter(getApplicationContext());
+
+        recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
+        recyclerView.setAdapter(mFoodListadapter);
+
+
+        swipeController = new SwipeController(new SwipeControllerActions() {
+            @Override
+            public void onRightClicked(int position) {
+                FoodItem item =  mFoodListadapter.mItems.get(position);
+                mFoodId = item.getId();
+                showDialog(BasicInfo.CONFIRM_DELETE);
+
+            }
+
+            @Override
+            public void onLeftClicked(int position) {
+                viewFood(position);
+
+            }
+        });
+
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(swipeController);
+        itemTouchHelper.attachToRecyclerView(recyclerView);
+
+        recyclerView.addItemDecoration(new RecyclerView.ItemDecoration() {
+            @Override
+            public void onDraw(Canvas c, RecyclerView parent, RecyclerView.State state) {
+                swipeController.onDraw(c);
+            }
+        });
 
     }
 
@@ -201,10 +232,50 @@ public class MainActivity extends AppCompatActivity {
 
             }
             outCursor.close();
+            setStats();
             mFoodListadapter.notifyDataSetChanged();
         }
 
         return recordCount;
+
+    }
+
+    protected Dialog onCreateDialog(int id) {
+        AlertDialog.Builder builder = null;
+
+        if(id == BasicInfo.CONFIRM_DELETE) {
+
+            builder = new AlertDialog.Builder(this);
+            builder.setTitle("FOOD");
+            builder.setMessage("정말로 삭제하시겠습니까?");
+            builder.setPositiveButton("예", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    deleteFood();
+                }
+            });
+
+            builder.setNegativeButton("아니오", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    dismissDialog(BasicInfo.CONFIRM_DELETE);
+                }
+            });
+        }
+        return builder.create();
+    }
+
+    public void deleteFood() {
+
+        // delete food record
+        String SQL = "delete from " + MemoDatabase.TABLE_MEMO +
+                " where _id = '" + mFoodId + "'";
+        Log.d(TAG, "SQL : " + SQL);
+        if(mDatabase !=null) {
+            mDatabase.execSQL(SQL);
+        }
+
+        loadFoodListData();
 
     }
 
